@@ -1,1 +1,97 @@
 # pushguard
+
+Pre-push hook that analyzes your code changes with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) before pushing. Catches security issues, bugs, logic errors, and code quality problems automatically.
+
+## Prerequisites
+
+- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed and authenticated
+- Node.js >= 22.14.0
+- Git
+
+## Install
+
+```bash
+pnpm add -D @nektarlabs/pushguard husky
+```
+
+## Setup
+
+```bash
+npx pushguard init
+```
+
+This creates a `.husky/pre-push` hook that runs pushguard before every push.
+
+## How it works
+
+1. You run `git push`
+2. Pushguard computes the diff of all unpushed commits
+3. The diff is sent to Claude Code for analysis
+4. Claude returns a structured verdict with categorized issues
+5. Push is **blocked** if any issue meets the severity threshold, otherwise allowed
+
+## Manual analysis
+
+You can run the analysis manually at any time without pushing:
+
+```bash
+npx pushguard analyze
+```
+
+This diffs your unpushed commits against the remote tracking branch (or `origin/main` as fallback) and runs the same analysis as the pre-push hook.
+
+## Configuration
+
+Add a `"pushguard"` key to your `package.json` or create a `.pushguard.json` file:
+
+```json
+{
+  "categories": ["security", "bug", "logic", "performance", "quality", "style"],
+  "blockOnSeverity": "high",
+  "model": "claude-opus-4-6",
+  "maxDiffSize": 100000,
+  "failOnError": false,
+  "exclude": ["*.lock", "*.min.js", "*.map", "dist/**"],
+  "verbose": false,
+  "skipBranches": ["develop"],
+  "customPrompt": "Also check for proper error handling"
+}
+```
+
+### Options
+
+| Option            | Default                                                         | Description                                                                  |
+| ----------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `categories`      | `["security", "bug", "logic"]`                                  | What to check: `security`, `bug`, `logic`, `performance`, `quality`, `style` |
+| `blockOnSeverity` | `"high"`                                                        | Minimum severity to block push: `critical`, `high`, `medium`, `low`          |
+| `model`           | `"claude-opus-4-6"`                                             | Claude model to use                                                          |
+| `maxDiffSize`     | `100000`                                                        | Max diff size in bytes before truncation                                     |
+| `failOnError`     | `false`                                                         | Block push if Claude CLI errors (fail-open by default)                       |
+| `exclude`         | `["*.lock", "*.min.js", "*.map", "dist/**", "node_modules/**"]` | File patterns to skip                                                        |
+| `verbose`         | `false`                                                         | Show full analysis summary                                                   |
+| `skipBranches`    | `[]`                                                            | Branch patterns to skip (supports trailing `*` wildcard)                     |
+| `customPrompt`    | —                                                               | Additional instructions for the review                                       |
+
+## Example output
+
+```
+pushguard: Analyzing 3 changed files before push...
+
+  CRITICAL  security  src/auth/login.ts:42
+  Hardcoded API secret exposed in source code
+  > Move to environment variable: const API_KEY = process.env.API_KEY
+
+  HIGH  bug  src/utils/parse.ts:18
+  Uncaught exception when input is null
+  > Add null check: if (input == null) return []
+
+  HIGH  logic  src/billing/calc.ts:55
+  Wrong comparison operator causes free tier users to be charged
+  > Change `>=` to `>`: if (usage > FREE_TIER_LIMIT)
+
+pushguard: Push BLOCKED (1 critical, 2 high)
+```
+
+## License
+
+MIT

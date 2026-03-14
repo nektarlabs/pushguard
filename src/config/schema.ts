@@ -1,0 +1,20 @@
+export interface GuardStagedConfig {
+  /** Categories to check */
+  categories: ("security" | "bug" | "logic" | "performance" | "quality" | "style")[];
+  /** Minimum severity to block push */
+  blockOnSeverity: "critical" | "high" | "medium" | "low";
+  /** Claude model to use */
+  model: string;
+  /** Max diff size in bytes before truncation */
+  maxDiffSize: number;
+  /** Whether to block push if Claude CLI fails */
+  failOnError: boolean;
+  /** File patterns to exclude from analysis */
+  exclude: string[];
+  /** Custom additional prompt instructions */
+  customPrompt?: string;
+  /** Whether to show the full analysis or just the verdict */
+  verbose: boolean;
+  /** Skip analysis for these branch patterns */
+  skipBranches: string[];
+}

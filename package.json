@@ -1,0 +1,83 @@
+{
+  "name": "@nektarlabs/pushguard",
+  "version": "0.0.0-development",
+  "type": "module",
+  "description": "Pre-push hook that analyzes code changes with Claude Code before pushing",
+  "bin": {
+    "pushguard": "./bin/pushguard.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "lint": "eslint src/",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky",
+    "prepublishOnly": "pnpm run build",
+    "test": "vitest run"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "peerDependencies": {
+    "husky": ">=9.0.0"
+  },
+  "peerDependenciesMeta": {
+    "husky": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.4.4",
+    "@commitlint/config-conventional": "^20.4.4",
+    "@eslint/js": "^10.0.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@types/node": "^20.0.0",
+    "eslint": "^10.0.3",
+    "lint-staged": "^16.3.3",
+    "prettier": "^3.8.1",
+    "semantic-release": "^25.0.3",
+    "typescript": "^5.5.0",
+    "typescript-eslint": "^8.57.0",
+    "vitest": "^3.0.0"
+  },
+  "keywords": [
+    "git",
+    "hook",
+    "pre-push",
+    "husky",
+    "claude",
+    "code-review",
+    "ai",
+    "security"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.14.0"
+  }
+}
