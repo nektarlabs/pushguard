@@ -1,3 +1,9 @@
+# [1.1.0](https://github.com/nektarlabs/pushguard/compare/v1.0.0...v1.1.0) (2026-03-16)
+
+### Features
+
+- adds possibility to install it globally ([26f2942](https://github.com/nektarlabs/pushguard/commit/26f29423b3dce56638d9942f424a24fc4aa1156e))
+
 # 1.0.0 (2026-03-14)
 
 ### Features
