@@ -1,3 +1,9 @@
+# [1.4.0](https://github.com/nektarlabs/pushguard/compare/v1.3.0...v1.4.0) (2026-03-16)
+
+### Features
+
+- makes claude reading all files to understand the full codebase ([d912191](https://github.com/nektarlabs/pushguard/commit/d91219143659256a2615ec5db70ba65e1e683a2e))
+
 # [1.3.0](https://github.com/nektarlabs/pushguard/compare/v1.2.0...v1.3.0) (2026-03-16)
 
 ### Features
