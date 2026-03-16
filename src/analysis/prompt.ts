@@ -9,6 +9,7 @@ export function buildSystemPrompt(config: GuardStagedConfig): string {
   const blockSeverities = SEVERITY_ORDER.slice(0, blockIdx + 1).join(", ");
 
   let prompt = `You are a code review guardian analyzing a git diff before push.
+You are running in the project's root directory. When analyzing changes, consider how they interact with the rest of the codebase — read related files as needed to understand the full context (e.g. callers, imports, types, tests, configs).
 
 Focus areas: ${categories}
 Blocking severities: ${blockSeverities}
@@ -24,6 +25,7 @@ Rules:
 - For logic errors, check for: incorrect conditionals, inverted boolean logic, wrong operator (e.g. && vs ||), unreachable code paths, missing edge cases, incorrect state transitions, flawed control flow, wrong variable used in comparisons, off-by-one in loops/ranges
 - For every issue, always include a "suggestion" field with a concrete fix (show the corrected code snippet when possible)
 - Be concise in messages and suggestions
+- When in doubt about how a changed function is used, read the relevant source files to verify before reporting an issue
 
 Respond with ONLY a JSON object (no markdown, no code fences, no explanation) matching this exact schema:
 {

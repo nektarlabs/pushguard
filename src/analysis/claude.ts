@@ -8,18 +8,20 @@ export async function analyzeWithClaude(
   systemPrompt: string,
   userPrompt: string,
   config: GuardStagedConfig,
+  cwd: string = process.cwd(),
 ): Promise<AnalysisResult> {
   const prompt = `${systemPrompt}\n\n---\n\n${userPrompt}`;
 
-  const args = ["-p", prompt, "--output-format", "json", "--model", config.model, "--max-turns", "1"];
+  const args = ["-p", prompt, "--output-format", "json", "--model", config.model];
 
-  const stdout = await spawnClaude(args);
+  const stdout = await spawnClaude(args, cwd);
   return parseClaudeResponse(stdout);
 }
 
-function spawnClaude(args: string[]): Promise<string> {
+function spawnClaude(args: string[], cwd: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const child = spawn("claude", args, {
+      cwd,
       env: {
         ...process.env,
         CLAUDE_CODE_ENTRYPOINT: undefined,
