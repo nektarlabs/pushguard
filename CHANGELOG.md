@@ -1,3 +1,9 @@
+# [1.3.0](https://github.com/nektarlabs/pushguard/compare/v1.2.0...v1.3.0) (2026-03-16)
+
+### Features
+
+- adds PUSHGUARD_SKIP to temporarily skip pushguard on a push ([2be31db](https://github.com/nektarlabs/pushguard/commit/2be31db2efdbdbf898a88b158befb6b35500d88e))
+
 # [1.2.0](https://github.com/nektarlabs/pushguard/compare/v1.1.0...v1.2.0) (2026-03-16)
 
 ### Features
