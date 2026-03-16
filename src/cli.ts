@@ -3,9 +3,12 @@
 import { parseArgs } from "node:util";
 
 async function main(): Promise<void> {
-  const { positionals } = parseArgs({
+  const { positionals, values } = parseArgs({
     allowPositionals: true,
     strict: false,
+    options: {
+      husky: { type: "boolean", default: false },
+    },
   });
 
   const command = positionals[0];
@@ -13,7 +16,12 @@ async function main(): Promise<void> {
   switch (command) {
     case "init": {
       const { init } = await import("./setup/install.js");
-      await init();
+      await init(process.cwd(), { husky: values.husky as boolean });
+      break;
+    }
+    case "uninstall": {
+      const { uninstall } = await import("./setup/install.js");
+      await uninstall();
       break;
     }
     case "analyze": {

@@ -11,16 +11,35 @@ Pre-push hook that analyzes your code changes with [Claude Code](https://docs.an
 ## Install
 
 ```bash
-pnpm add -D @nektarlabs/pushguard husky
+npm install -g @nektarlabs/pushguard
 ```
 
 ## Setup
 
+### Global (recommended)
+
 ```bash
-npx pushguard init
+pushguard init
 ```
 
-This creates a `.husky/pre-push` hook that runs pushguard before every push.
+This installs a global git `pre-push` hook at `~/.pushguard/hooks/` and configures `core.hooksPath` so pushguard runs on every push in any repository. No per-repo setup or dependencies required.
+
+If the repository has local hooks (`.husky/pre-push` or `.git/hooks/pre-push.local`), they are chained automatically and run before pushguard.
+
+To uninstall:
+
+```bash
+pushguard uninstall
+```
+
+### With Husky (per-project)
+
+```bash
+pnpm add -D @nektarlabs/pushguard husky
+npx pushguard init --husky
+```
+
+This creates a `.husky/pre-push` hook that runs pushguard before every push in that project.
 
 ## How it works
 
@@ -35,7 +54,7 @@ This creates a `.husky/pre-push` hook that runs pushguard before every push.
 You can run the analysis manually at any time without pushing:
 
 ```bash
-npx pushguard analyze
+pushguard analyze
 ```
 
 This diffs your unpushed commits against the remote tracking branch (or `origin/main` as fallback) and runs the same analysis as the pre-push hook.
