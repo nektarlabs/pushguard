@@ -41,6 +41,14 @@ npx pushguard init --husky
 
 This creates a `.husky/pre-push` hook that runs pushguard before every push in that project.
 
+## Skipping pushguard
+
+To temporarily skip pushguard on a push:
+
+```bash
+PUSHGUARD_SKIP=1 git push
+```
+
 ## How it works
 
 1. You run `git push`

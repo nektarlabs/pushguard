@@ -15,6 +15,11 @@ const GLOBAL_HOOK_CONTENT = `#!/bin/sh
 # pushguard global pre-push hook
 # Runs pushguard on every git push
 
+# Skip if PUSHGUARD_SKIP is set
+if [ -n "$PUSHGUARD_SKIP" ]; then
+  exit 0
+fi
+
 # Chain local hooks if they exist
 LOCAL_HOOK="$(git rev-parse --git-dir 2>/dev/null)/hooks/pre-push.local"
 if [ -f "$LOCAL_HOOK" ]; then
