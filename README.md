@@ -61,7 +61,14 @@ This diffs your unpushed commits against the remote tracking branch (or `origin/
 
 ## Configuration
 
-Add a `"pushguard"` key to your `package.json` or create a `.pushguard.json` file:
+Pushguard loads configuration with the following priority (highest first):
+
+1. `.pushguard.json` in the repo root
+2. `"pushguard"` key in the repo's `package.json`
+3. `~/.pushguard/config.json` (global config, shared across all repos)
+4. Built-in defaults
+
+Add a `"pushguard"` key to your `package.json`, create a `.pushguard.json` file, or set global defaults in `~/.pushguard/config.json`:
 
 ```json
 {
