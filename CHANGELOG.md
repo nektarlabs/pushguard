@@ -1,3 +1,9 @@
+# [1.2.0](https://github.com/nektarlabs/pushguard/compare/v1.1.0...v1.2.0) (2026-03-16)
+
+### Features
+
+- adds support for ~/.pushguard/config.json ([39fe13b](https://github.com/nektarlabs/pushguard/commit/39fe13b06fa57eb1cfd371cac61b3fa5e16dff22))
+
 # [1.1.0](https://github.com/nektarlabs/pushguard/compare/v1.0.0...v1.1.0) (2026-03-16)
 
 ### Features
