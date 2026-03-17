@@ -9,4 +9,5 @@ export const DEFAULTS: GuardStagedConfig = {
   exclude: ["*.lock", "*.min.js", "*.map", "dist/**", "node_modules/**"],
   verbose: false,
   skipBranches: [],
+  timeout: 300_000,
 };

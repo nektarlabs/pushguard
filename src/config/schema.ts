@@ -17,4 +17,6 @@ export interface GuardStagedConfig {
   verbose: boolean;
   /** Skip analysis for these branch patterns */
   skipBranches: string[];
+  /** Timeout in milliseconds for Claude CLI */
+  timeout: number;
 }

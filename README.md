@@ -88,6 +88,7 @@ Add a `"pushguard"` key to your `package.json`, create a `.pushguard.json` file,
   "exclude": ["*.lock", "*.min.js", "*.map", "dist/**"],
   "verbose": false,
   "skipBranches": ["develop"],
+  "timeout": 300000,
   "customPrompt": "Also check for proper error handling"
 }
 ```
@@ -104,6 +105,7 @@ Add a `"pushguard"` key to your `package.json`, create a `.pushguard.json` file,
 | `exclude`         | `["*.lock", "*.min.js", "*.map", "dist/**", "node_modules/**"]` | File patterns to skip                                                        |
 | `verbose`         | `false`                                                         | Show full analysis summary                                                   |
 | `skipBranches`    | `[]`                                                            | Branch patterns to skip (supports trailing `*` wildcard)                     |
+| `timeout`         | `300000`                                                        | Timeout in milliseconds for Claude CLI (default 5 min)                       |
 | `customPrompt`    | —                                                               | Additional instructions for the review                                       |
 
 ## Example output

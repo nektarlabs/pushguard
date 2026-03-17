@@ -2,8 +2,6 @@ import { spawn } from "node:child_process";
 import type { GuardStagedConfig } from "../config/schema.js";
 import type { AnalysisResult } from "../types.js";
 
-const TIMEOUT_MS = 60_000;
-
 export async function analyzeWithClaude(
   systemPrompt: string,
   userPrompt: string,
@@ -14,11 +12,11 @@ export async function analyzeWithClaude(
 
   const args = ["-p", prompt, "--output-format", "json", "--model", config.model];
 
-  const stdout = await spawnClaude(args, cwd);
+  const stdout = await spawnClaude(args, cwd, config.timeout);
   return parseClaudeResponse(stdout);
 }
 
-function spawnClaude(args: string[], cwd: string): Promise<string> {
+function spawnClaude(args: string[], cwd: string, timeoutMs: number): Promise<string> {
   return new Promise((resolve, reject) => {
     const child = spawn("claude", args, {
       cwd,
@@ -43,7 +41,7 @@ function spawnClaude(args: string[], cwd: string): Promise<string> {
     const timer = setTimeout(() => {
       child.kill();
       reject(new Error("Claude CLI timed out"));
-    }, TIMEOUT_MS);
+    }, timeoutMs);
 
     child.on("close", (code: number | null) => {
       clearTimeout(timer);
