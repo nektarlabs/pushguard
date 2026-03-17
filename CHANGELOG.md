@@ -1,3 +1,9 @@
+# [1.5.0](https://github.com/nektarlabs/pushguard/compare/v1.4.0...v1.5.0) (2026-03-17)
+
+### Features
+
+- adds timeout as config and increases its default value ([ce7d52c](https://github.com/nektarlabs/pushguard/commit/ce7d52c5ce164b8d873e11780276d9cd799dccd1))
+
 # [1.4.0](https://github.com/nektarlabs/pushguard/compare/v1.3.0...v1.4.0) (2026-03-16)
 
 ### Features
