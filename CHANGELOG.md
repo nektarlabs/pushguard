@@ -1,3 +1,9 @@
+# [1.6.0](https://github.com/nektarlabs/pushguard/compare/v1.5.0...v1.6.0) (2026-03-27)
+
+### Features
+
+- adds context to detect more errors + performance check ([b2c5c4d](https://github.com/nektarlabs/pushguard/commit/b2c5c4d123e0422e1ae610ca7190d53196efb7a4))
+
 # [1.5.0](https://github.com/nektarlabs/pushguard/compare/v1.4.0...v1.5.0) (2026-03-17)
 
 ### Features
