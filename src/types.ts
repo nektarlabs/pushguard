@@ -26,4 +26,5 @@ export interface DiffResult {
   diff: string;
   files: string[];
   truncated: boolean;
+  context: Record<string, string>;
 }

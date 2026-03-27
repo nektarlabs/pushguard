@@ -16,7 +16,7 @@ export async function getDefaultBranch(): Promise<string> {
 
 export async function getDiff(pushRef: PushRef, config: GuardStagedConfig): Promise<DiffResult> {
   if (pushRef.isDelete) {
-    return { diff: "", files: [], truncated: false };
+    return { diff: "", files: [], truncated: false, context: {} };
   }
 
   let baseRef: string;
@@ -49,7 +49,7 @@ export async function getDiff(pushRef: PushRef, config: GuardStagedConfig): Prom
     .filter((f) => !matchesExcludePattern(f, config.exclude));
 
   if (files.length === 0) {
-    return { diff: "", files: [], truncated: false };
+    return { diff: "", files: [], truncated: false, context: {} };
   }
 
   // Get the full diff
@@ -77,10 +77,11 @@ export async function getDiff(pushRef: PushRef, config: GuardStagedConfig): Prom
       diff: `[TRUNCATED — diff exceeded ${config.maxDiffSize} bytes]\n\n## Diff stat\n${stat}\n\n## Partial diff\n${truncatedDiff}`,
       files,
       truncated: true,
+      context: {},
     };
   }
 
-  return { diff, files, truncated: false };
+  return { diff, files, truncated: false, context: {} };
 }
 
 function matchesExcludePattern(file: string, patterns: string[]): boolean {

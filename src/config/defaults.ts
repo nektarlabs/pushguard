@@ -10,4 +10,6 @@ export const DEFAULTS: GuardStagedConfig = {
   verbose: false,
   skipBranches: [],
   timeout: 300_000,
+  includeContext: true,
+  maxContextSize: 500_000,
 };

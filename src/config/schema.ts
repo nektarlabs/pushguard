@@ -19,4 +19,8 @@ export interface GuardStagedConfig {
   skipBranches: string[];
   /** Timeout in milliseconds for Claude CLI */
   timeout: number;
+  /** Whether to include full file contents of changed and related files */
+  includeContext: boolean;
+  /** Max size in bytes for context files */
+  maxContextSize: number;
 }

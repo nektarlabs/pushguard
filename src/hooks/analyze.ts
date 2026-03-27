@@ -1,6 +1,7 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { getDiff } from "../git/diff.js";
+import { getRelatedContext } from "../git/context.js";
 import { buildSystemPrompt, buildUserPrompt } from "../analysis/prompt.js";
 import { analyzeWithClaude } from "../analysis/claude.js";
 import { loadConfig } from "../config/loader.js";
@@ -53,6 +54,9 @@ async function runDiffAndAnalyze(
       log("No unpushed changes to analyze.");
       return 0;
     }
+
+    // Gather full file context for changed and related files
+    diffResult.context = await getRelatedContext(diffResult.files, config);
 
     reportStart(diffResult.files.length);
 
