@@ -96,7 +96,7 @@ async function findRelatedFiles(changedFiles: string[], config: GuardStagedConfi
 
   try {
     const { stdout } = await exec("git", ["grep", "-l", "-E", `(import|require|from).*?(${pattern})`], {
-      maxBuffer: 1024 * 1024,
+      maxBuffer: 50 * 1024 * 1024,
     });
 
     return stdout

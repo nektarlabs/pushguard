@@ -34,13 +34,14 @@ export async function getDiff(pushRef: PushRef, config: GuardStagedConfig): Prom
     baseRef = pushRef.remoteSha;
   }
 
+  const execOpts = { maxBuffer: 50 * 1024 * 1024 }; // 50 MB
+
   // Get the list of changed files
-  const { stdout: fileList } = await exec("git", [
-    "diff",
-    "--name-only",
-    "--diff-filter=ACMR",
-    `${baseRef}..${pushRef.localSha}`,
-  ]);
+  const { stdout: fileList } = await exec(
+    "git",
+    ["diff", "--name-only", "--diff-filter=ACMR", `${baseRef}..${pushRef.localSha}`],
+    execOpts,
+  );
 
   const files = fileList
     .trim()
@@ -53,24 +54,19 @@ export async function getDiff(pushRef: PushRef, config: GuardStagedConfig): Prom
   }
 
   // Get the full diff
-  const { stdout: diff } = await exec("git", [
-    "diff",
-    "--diff-filter=ACMR",
-    `${baseRef}..${pushRef.localSha}`,
-    "--",
-    ...files,
-  ]);
+  const { stdout: diff } = await exec(
+    "git",
+    ["diff", "--diff-filter=ACMR", `${baseRef}..${pushRef.localSha}`, "--", ...files],
+    execOpts,
+  );
 
   // Check size and truncate if needed
   if (Buffer.byteLength(diff) > config.maxDiffSize) {
-    const { stdout: stat } = await exec("git", [
-      "diff",
-      "--stat",
-      "--diff-filter=ACMR",
-      `${baseRef}..${pushRef.localSha}`,
-      "--",
-      ...files,
-    ]);
+    const { stdout: stat } = await exec(
+      "git",
+      ["diff", "--stat", "--diff-filter=ACMR", `${baseRef}..${pushRef.localSha}`, "--", ...files],
+      execOpts,
+    );
 
     const truncatedDiff = diff.slice(0, config.maxDiffSize);
     return {
