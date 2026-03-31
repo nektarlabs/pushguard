@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/nektarlabs/pushguard/compare/v1.6.0...v1.7.0) (2026-03-31)
+
+### Features
+
+- adds codex support ([ff4d8d4](https://github.com/nektarlabs/pushguard/commit/ff4d8d46ee187897b69055eeb05758433f94e048))
+- increases maxBuffer to 50 MB for large diffs ([23cffe1](https://github.com/nektarlabs/pushguard/commit/23cffe13b2998d05f7f67f37635b6e9d5e7f587d))
+
 # [1.6.0](https://github.com/nektarlabs/pushguard/compare/v1.5.0...v1.6.0) (2026-03-27)
 
 ### Features
