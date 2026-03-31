@@ -2,7 +2,7 @@ import { parsePushRefs } from "../git/parse-stdin.js";
 import { getDiff } from "../git/diff.js";
 import { getRelatedContext } from "../git/context.js";
 import { buildSystemPrompt, buildUserPrompt } from "../analysis/prompt.js";
-import { analyzeWithClaude } from "../analysis/claude.js";
+import { analyze } from "../analysis/analyze.js";
 import { loadConfig } from "../config/loader.js";
 import { log, reportStart, reportResult } from "../output/reporter.js";
 
@@ -43,7 +43,7 @@ export async function runPrePush(): Promise<number> {
       // Gather full file context for changed and related files
       diffResult.context = await getRelatedContext(diffResult.files, config);
 
-      reportStart(diffResult.files.length);
+      reportStart(diffResult.files.length, config.provider, config.model);
 
       if (diffResult.truncated) {
         log("Diff was truncated due to size — analysis may be partial.");
@@ -52,7 +52,7 @@ export async function runPrePush(): Promise<number> {
       const systemPrompt = buildSystemPrompt(config);
       const userPrompt = buildUserPrompt(diffResult);
 
-      const result = await analyzeWithClaude(systemPrompt, userPrompt, config);
+      const result = await analyze(systemPrompt, userPrompt, config);
       reportResult(result, config.verbose);
 
       if (result.verdict === "fail") {

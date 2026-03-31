@@ -3,7 +3,7 @@ import { promisify } from "node:util";
 import { getDiff } from "../git/diff.js";
 import { getRelatedContext } from "../git/context.js";
 import { buildSystemPrompt, buildUserPrompt } from "../analysis/prompt.js";
-import { analyzeWithClaude } from "../analysis/claude.js";
+import { analyze } from "../analysis/analyze.js";
 import { loadConfig } from "../config/loader.js";
 import { log, reportStart, reportResult } from "../output/reporter.js";
 import type { PushRef } from "../types.js";
@@ -58,11 +58,11 @@ async function runDiffAndAnalyze(
     // Gather full file context for changed and related files
     diffResult.context = await getRelatedContext(diffResult.files, config);
 
-    reportStart(diffResult.files.length);
+    reportStart(diffResult.files.length, config.provider, config.model);
 
     const systemPrompt = buildSystemPrompt(config);
     const userPrompt = buildUserPrompt(diffResult);
-    const result = await analyzeWithClaude(systemPrompt, userPrompt, config);
+    const result = await analyze(systemPrompt, userPrompt, config);
 
     reportResult(result, config.verbose);
     return result.verdict === "fail" ? 1 : 0;

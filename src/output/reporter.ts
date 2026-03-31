@@ -26,8 +26,9 @@ export function log(message: string): void {
   console.error(`${PREFIX}: ${message}`);
 }
 
-export function reportStart(fileCount: number): void {
+export function reportStart(fileCount: number, provider: string, model: string): void {
   log(`Analyzing ${fileCount} changed file${fileCount === 1 ? "" : "s"} before push...`);
+  log(`${COLORS.dim}Provider: ${provider} | Model: ${model}${COLORS.reset}`);
 }
 
 export function reportResult(result: AnalysisResult, verbose: boolean): void {

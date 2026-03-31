@@ -1,6 +1,8 @@
 export { runPrePush } from "./hooks/pre-push.js";
 export { loadConfig } from "./config/loader.js";
+export { analyze } from "./analysis/analyze.js";
 export { analyzeWithClaude } from "./analysis/claude.js";
+export { analyzeWithCodex } from "./analysis/codex.js";
 export { buildSystemPrompt, buildUserPrompt } from "./analysis/prompt.js";
 export { getDiff } from "./git/diff.js";
 export { parsePushRefs } from "./git/parse-stdin.js";

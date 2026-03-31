@@ -1,10 +1,12 @@
 # pushguard
 
-Pre-push hook that analyzes your code changes with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) before pushing. Catches security issues, bugs, logic errors, and code quality problems automatically.
+Pre-push hook that analyzes your code changes with AI before pushing. Catches security issues, bugs, logic errors, and code quality problems automatically.
+
+Supports [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and [Codex CLI](https://github.com/openai/codex) as analysis providers.
 
 ## Prerequisites
 
-- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed and authenticated
+- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) or [Codex CLI](https://github.com/openai/codex) installed and authenticated
 - Node.js >= 22.14.0
 - Git
 
@@ -49,12 +51,54 @@ To temporarily skip pushguard on a push:
 PUSHGUARD_SKIP=1 git push
 ```
 
+## Choosing a provider
+
+Pushguard supports two AI providers:
+
+| Provider           | CLI                                                           | Default model     |
+| ------------------ | ------------------------------------------------------------- | ----------------- |
+| `claude` (default) | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | `claude-opus-4-6` |
+| `codex`            | [Codex CLI](https://github.com/openai/codex)                  | `gpt-5.3-codex`   |
+
+### Via configuration
+
+Set the `provider` (and optionally `model`) in `.pushguard.json`, `package.json`, or `~/.pushguard/config.json`:
+
+```json
+{
+  "provider": "codex"
+}
+```
+
+### Via environment variables
+
+Override the provider per-push using `PUSHGUARD_PROVIDER`:
+
+```bash
+# Codex with gpt-5.3-codex (default codex model)
+PUSHGUARD_PROVIDER=codex git push
+
+# Claude with claude-opus-4-6 (default claude model)
+PUSHGUARD_PROVIDER=claude git push
+
+# Override both provider and model
+PUSHGUARD_PROVIDER=claude PUSHGUARD_MODEL=claude-sonnet-4-6 git push
+```
+
+Environment variables take the highest priority, overriding all config files. When `PUSHGUARD_PROVIDER` is set without `PUSHGUARD_MODEL`, the provider's default model is used automatically.
+
+You can also export them in your shell profile for a persistent default:
+
+```bash
+export PUSHGUARD_PROVIDER=codex
+```
+
 ## How it works
 
 1. You run `git push`
 2. Pushguard computes the diff of all unpushed commits
-3. The diff is sent to Claude Code for analysis
-4. Claude returns a structured verdict with categorized issues
+3. The diff is sent to the configured AI provider for analysis
+4. The provider returns a structured verdict with categorized issues
 5. Push is **blocked** if any issue meets the severity threshold, otherwise allowed
 
 ## Manual analysis
@@ -71,15 +115,17 @@ This diffs your unpushed commits against the remote tracking branch (or `origin/
 
 Pushguard loads configuration with the following priority (highest first):
 
-1. `.pushguard.json` in the repo root
-2. `"pushguard"` key in the repo's `package.json`
-3. `~/.pushguard/config.json` (global config, shared across all repos)
-4. Built-in defaults
+1. Environment variables (`PUSHGUARD_PROVIDER`, `PUSHGUARD_MODEL`)
+2. `.pushguard.json` in the repo root
+3. `"pushguard"` key in the repo's `package.json`
+4. `~/.pushguard/config.json` (global config, shared across all repos)
+5. Built-in defaults
 
 Add a `"pushguard"` key to your `package.json`, create a `.pushguard.json` file, or set global defaults in `~/.pushguard/config.json`:
 
 ```json
 {
+  "provider": "claude",
   "categories": ["security", "bug", "logic", "performance", "quality", "style"],
   "blockOnSeverity": "high",
   "model": "claude-opus-4-6",
@@ -97,16 +143,25 @@ Add a `"pushguard"` key to your `package.json`, create a `.pushguard.json` file,
 
 | Option            | Default                                                         | Description                                                                  |
 | ----------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `provider`        | `"claude"`                                                      | AI provider: `claude` or `codex`                                             |
 | `categories`      | `["security", "bug", "logic"]`                                  | What to check: `security`, `bug`, `logic`, `performance`, `quality`, `style` |
 | `blockOnSeverity` | `"high"`                                                        | Minimum severity to block push: `critical`, `high`, `medium`, `low`          |
-| `model`           | `"claude-opus-4-6"`                                             | Claude model to use                                                          |
+| `model`           | `"claude-opus-4-6"` / `"gpt-5.3-codex"`                         | AI model to use (default depends on provider)                                |
 | `maxDiffSize`     | `100000`                                                        | Max diff size in bytes before truncation                                     |
-| `failOnError`     | `false`                                                         | Block push if Claude CLI errors (fail-open by default)                       |
+| `failOnError`     | `false`                                                         | Block push if the AI CLI errors (fail-open by default)                       |
 | `exclude`         | `["*.lock", "*.min.js", "*.map", "dist/**", "node_modules/**"]` | File patterns to skip                                                        |
 | `verbose`         | `false`                                                         | Show full analysis summary                                                   |
 | `skipBranches`    | `[]`                                                            | Branch patterns to skip (supports trailing `*` wildcard)                     |
-| `timeout`         | `300000`                                                        | Timeout in milliseconds for Claude CLI (default 5 min)                       |
+| `timeout`         | `300000`                                                        | Timeout in milliseconds for the AI CLI (default 5 min)                       |
 | `customPrompt`    | —                                                               | Additional instructions for the review                                       |
+
+### Environment variables
+
+| Variable             | Description                                    |
+| -------------------- | ---------------------------------------------- |
+| `PUSHGUARD_SKIP`     | Set to `1` to skip analysis entirely           |
+| `PUSHGUARD_PROVIDER` | Override the AI provider (`claude` or `codex`) |
+| `PUSHGUARD_MODEL`    | Override the AI model                          |
 
 ## Example output
 

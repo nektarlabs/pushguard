@@ -1,9 +1,11 @@
 export interface GuardStagedConfig {
+  /** AI provider to use for analysis */
+  provider: "claude" | "codex";
   /** Categories to check */
   categories: ("security" | "bug" | "logic" | "performance" | "quality" | "style")[];
   /** Minimum severity to block push */
   blockOnSeverity: "critical" | "high" | "medium" | "low";
-  /** Claude model to use */
+  /** AI model to use */
   model: string;
   /** Max diff size in bytes before truncation */
   maxDiffSize: number;

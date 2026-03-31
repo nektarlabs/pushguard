@@ -2,13 +2,22 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { homedir } from "node:os";
 import type { GuardStagedConfig } from "./schema.js";
-import { DEFAULTS } from "./defaults.js";
+import { DEFAULTS, DEFAULT_MODELS } from "./defaults.js";
 
 export async function loadConfig(cwd: string = process.cwd()): Promise<GuardStagedConfig> {
   const localOverrides = (await loadFromRc(cwd)) ?? (await loadFromPackageJson(cwd));
   const globalOverrides = await loadFromGlobalConfig();
 
-  return { ...DEFAULTS, ...globalOverrides, ...localOverrides };
+  const envOverrides = loadFromEnv();
+  const merged = { ...DEFAULTS, ...globalOverrides, ...localOverrides, ...envOverrides };
+
+  // If provider was changed but model wasn't explicitly set, use the provider's default model
+  const modelExplicitlySet = envOverrides.model ?? localOverrides?.model ?? globalOverrides?.model;
+  if (!modelExplicitlySet && merged.provider !== DEFAULTS.provider) {
+    merged.model = DEFAULT_MODELS[merged.provider];
+  }
+
+  return merged;
 }
 
 async function loadFromRc(cwd: string): Promise<Partial<GuardStagedConfig> | null> {
@@ -31,6 +40,24 @@ async function loadFromPackageJson(cwd: string): Promise<Partial<GuardStagedConf
   } catch {
     return null;
   }
+}
+
+const VALID_PROVIDERS: GuardStagedConfig["provider"][] = ["claude", "codex"];
+
+function loadFromEnv(): Partial<GuardStagedConfig> {
+  const overrides: Partial<GuardStagedConfig> = {};
+
+  const provider = process.env.PUSHGUARD_PROVIDER?.toLowerCase();
+  if (provider && VALID_PROVIDERS.includes(provider as GuardStagedConfig["provider"])) {
+    overrides.provider = provider as GuardStagedConfig["provider"];
+  }
+
+  const model = process.env.PUSHGUARD_MODEL;
+  if (model) {
+    overrides.model = model;
+  }
+
+  return overrides;
 }
 
 async function loadFromGlobalConfig(): Promise<Partial<GuardStagedConfig> | null> {
