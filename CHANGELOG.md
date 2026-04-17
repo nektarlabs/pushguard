@@ -1,3 +1,9 @@
+# [1.8.0](https://github.com/nektarlabs/pushguard/compare/v1.7.0...v1.8.0) (2026-04-17)
+
+### Features
+
+- adds claude-opus-4-7 as claude default model ([35fbdc7](https://github.com/nektarlabs/pushguard/commit/35fbdc74da8ae450e0ce30c5f65419e5419b2866))
+
 # [1.7.0](https://github.com/nektarlabs/pushguard/compare/v1.6.0...v1.7.0) (2026-03-31)
 
 ### Features
