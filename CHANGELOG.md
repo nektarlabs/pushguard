@@ -1,3 +1,9 @@
+# [1.9.0](https://github.com/nektarlabs/pushguard/compare/v1.8.0...v1.9.0) (2026-05-15)
+
+### Features
+
+- makes gpt-5-5 as default model for codex ([c9bb087](https://github.com/nektarlabs/pushguard/commit/c9bb0878b32e86ea0ac9d2210f747fa575ce1183))
+
 # [1.8.0](https://github.com/nektarlabs/pushguard/compare/v1.7.0...v1.8.0) (2026-04-17)
 
 ### Features
