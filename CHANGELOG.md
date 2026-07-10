@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/nektarlabs/pushguard/compare/v1.9.0...v1.10.0) (2026-07-10)
+
+### Features
+
+- adds support for gpt-5.6 models and improves prompt to detect wrong comments ([c1d9616](https://github.com/nektarlabs/pushguard/commit/c1d96161b16a4b5aadc3ef4b4023d38ed82c36b8))
+- adds support for gpt-5.6 models and improves prompt to detect wrong comments ([9df0f37](https://github.com/nektarlabs/pushguard/commit/9df0f3741708c097e64d6c8932f457d4da739899))
+
 # [1.9.0](https://github.com/nektarlabs/pushguard/compare/v1.8.0...v1.9.0) (2026-05-15)
 
 ### Features
