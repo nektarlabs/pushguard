@@ -7,7 +7,7 @@ Supports [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and [Code
 ## Prerequisites
 
 - [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) or [Codex CLI](https://github.com/openai/codex) installed and authenticated
-- Node.js >= 22.14.0
+- Node.js >= 24.10.0
 - Git
 
 ## Install
