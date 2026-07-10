@@ -51,6 +51,14 @@ describe("buildSystemPrompt", () => {
     expect(prompt).toContain("synchronous blocking calls in async hot paths");
     expect(prompt).toContain("redundant re-computation");
   });
+
+  it("always includes the comment-correctness rule, regardless of focus areas", () => {
+    // Configure categories that do NOT include "quality" to prove the rule is
+    // always present and not gated on the focus areas.
+    const prompt = buildSystemPrompt(makeConfig({ categories: ["security"] }));
+    expect(prompt).toContain("Comment correctness (ALWAYS check this");
+    expect(prompt).toContain("verify that it accurately describes what the adjacent code actually does");
+  });
 });
 
 describe("buildUserPrompt", () => {
