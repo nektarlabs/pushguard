@@ -1,8 +1,8 @@
 import type { GuardStagedConfig } from "./schema.js";
 
 export const DEFAULT_MODELS: Record<GuardStagedConfig["provider"], string> = {
-  claude: "claude-opus-4-7",
-  codex: "gpt-5.5",
+  claude: "claude-opus-4-8",
+  codex: "gpt-5.6-sol",
 };
 
 export const DEFAULTS: GuardStagedConfig = {
