@@ -1,3 +1,9 @@
+## [1.10.1](https://github.com/nektarlabs/pushguard/compare/v1.10.0...v1.10.1) (2026-07-11)
+
+### Bug Fixes
+
+- avoids to push if review fails ([1d70d16](https://github.com/nektarlabs/pushguard/commit/1d70d16f6ba3328d02a0bd9aad0d95f364429793))
+
 # [1.10.0](https://github.com/nektarlabs/pushguard/compare/v1.9.0...v1.10.0) (2026-07-10)
 
 ### Features
