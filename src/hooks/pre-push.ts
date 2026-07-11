@@ -61,13 +61,8 @@ export async function runPrePush(): Promise<number> {
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       log(`Analysis error: ${msg}`);
-
-      if (config.failOnError) {
-        log("Push blocked due to analysis error (failOnError is enabled).");
-        return 1;
-      }
-
-      log("Allowing push despite analysis error (fail-open mode).");
+      log("Push blocked due to analysis error.");
+      return 1;
     }
   }
 

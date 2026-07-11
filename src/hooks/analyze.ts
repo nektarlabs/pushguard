@@ -69,7 +69,7 @@ async function runDiffAndAnalyze(
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     log(`Analysis error: ${msg}`);
-    return config.failOnError ? 1 : 0;
+    return 1;
   }
 }
 

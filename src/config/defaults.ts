@@ -11,7 +11,6 @@ export const DEFAULTS: GuardStagedConfig = {
   blockOnSeverity: "high",
   model: DEFAULT_MODELS.claude,
   maxDiffSize: 100_000,
-  failOnError: false,
   exclude: ["*.lock", "*.min.js", "*.map", "dist/**", "node_modules/**"],
   verbose: false,
   skipBranches: [],

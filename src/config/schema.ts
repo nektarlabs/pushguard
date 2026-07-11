@@ -9,8 +9,6 @@ export interface GuardStagedConfig {
   model: string;
   /** Max diff size in bytes before truncation */
   maxDiffSize: number;
-  /** Whether to block push if Claude CLI fails */
-  failOnError: boolean;
   /** File patterns to exclude from analysis */
   exclude: string[];
   /** Custom additional prompt instructions */

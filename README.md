@@ -136,7 +136,6 @@ Add a `"pushguard"` key to your `package.json`, create a `.pushguard.json` file,
   "blockOnSeverity": "high",
   "model": "claude-opus-4-8",
   "maxDiffSize": 100000,
-  "failOnError": false,
   "exclude": ["*.lock", "*.min.js", "*.map", "dist/**"],
   "verbose": false,
   "skipBranches": ["develop"],
@@ -154,7 +153,6 @@ Add a `"pushguard"` key to your `package.json`, create a `.pushguard.json` file,
 | `blockOnSeverity` | `"high"`                                                        | Minimum severity to block push: `critical`, `high`, `medium`, `low`          |
 | `model`           | `"claude-opus-4-8"` / `"gpt-5.6-sol"`                           | AI model to use (default depends on provider)                                |
 | `maxDiffSize`     | `100000`                                                        | Max diff size in bytes before truncation                                     |
-| `failOnError`     | `false`                                                         | Block push if the AI CLI errors (fail-open by default)                       |
 | `exclude`         | `["*.lock", "*.min.js", "*.map", "dist/**", "node_modules/**"]` | File patterns to skip                                                        |
 | `verbose`         | `false`                                                         | Show full analysis summary                                                   |
 | `skipBranches`    | `[]`                                                            | Branch patterns to skip (supports trailing `*` wildcard)                     |
