@@ -63,6 +63,10 @@ function reportIssue(issue: AnalysisIssue): void {
   console.error(`  ${severity}  ${category}${location}`);
   console.error(`  ${issue.message}`);
 
+  if (issue.translatedSummary) {
+    console.error(`  ${COLORS.cyan}${issue.translatedSummary}${COLORS.reset}`);
+  }
+
   if (issue.suggestion) {
     console.error(`  ${COLORS.dim}> ${issue.suggestion}${COLORS.reset}`);
   }

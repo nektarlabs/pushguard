@@ -87,6 +87,15 @@ PUSHGUARD_PROVIDER=claude git push
 PUSHGUARD_PROVIDER=claude PUSHGUARD_MODEL=claude-sonnet-4-6 git push
 PUSHGUARD_PROVIDER=codex PUSHGUARD_MODEL=gpt-5.6-terra git push
 PUSHGUARD_PROVIDER=codex PUSHGUARD_MODEL=gpt-5.6-luna git push
+
+# Override the timeout for this push (milliseconds)
+PUSHGUARD_TIMEOUT=7200000 git push
+
+# Add a short Italian summary to every issue
+PUSHGUARD_TRANSLATE_ISSUES=1 git push
+
+# Use another language
+PUSHGUARD_TRANSLATE_ISSUES=1 PUSHGUARD_TRANSLATION_LANGUAGE=Spanish git push
 ```
 
 Environment variables take the highest priority, overriding all config files. When `PUSHGUARD_PROVIDER` is set without `PUSHGUARD_MODEL`, the provider's default model is used automatically.
@@ -121,7 +130,7 @@ This diffs your unpushed commits against the remote tracking branch (or `origin/
 
 Pushguard loads configuration with the following priority (highest first):
 
-1. Environment variables (`PUSHGUARD_PROVIDER`, `PUSHGUARD_MODEL`)
+1. Environment variables (`PUSHGUARD_PROVIDER`, `PUSHGUARD_MODEL`, `PUSHGUARD_TIMEOUT`, `PUSHGUARD_TRANSLATE_ISSUES`, `PUSHGUARD_TRANSLATION_LANGUAGE`)
 2. `.pushguard.json` in the repo root
 3. `"pushguard"` key in the repo's `package.json`
 4. `~/.pushguard/config.json` (global config, shared across all repos)
@@ -139,33 +148,40 @@ Add a `"pushguard"` key to your `package.json`, create a `.pushguard.json` file,
   "exclude": ["*.lock", "*.min.js", "*.map", "dist/**"],
   "verbose": false,
   "skipBranches": ["develop"],
-  "timeout": 300000,
+  "timeout": 3600000,
+  "translateIssues": false,
+  "translationLanguage": "Italian",
   "customPrompt": "Also check for proper error handling"
 }
 ```
 
 ### Options
 
-| Option            | Default                                                         | Description                                                                  |
-| ----------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `provider`        | `"claude"`                                                      | AI provider: `claude` or `codex`                                             |
-| `categories`      | `["security", "bug", "logic"]`                                  | What to check: `security`, `bug`, `logic`, `performance`, `quality`, `style` |
-| `blockOnSeverity` | `"high"`                                                        | Minimum severity to block push: `critical`, `high`, `medium`, `low`          |
-| `model`           | `"claude-opus-4-8"` / `"gpt-5.6-sol"`                           | AI model to use (default depends on provider)                                |
-| `maxDiffSize`     | `100000`                                                        | Max diff size in bytes before truncation                                     |
-| `exclude`         | `["*.lock", "*.min.js", "*.map", "dist/**", "node_modules/**"]` | File patterns to skip                                                        |
-| `verbose`         | `false`                                                         | Show full analysis summary                                                   |
-| `skipBranches`    | `[]`                                                            | Branch patterns to skip (supports trailing `*` wildcard)                     |
-| `timeout`         | `300000`                                                        | Timeout in milliseconds for the AI CLI (default 5 min)                       |
-| `customPrompt`    | —                                                               | Additional instructions for the review                                       |
+| Option                | Default                                                         | Description                                                                  |
+| --------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `provider`            | `"claude"`                                                      | AI provider: `claude` or `codex`                                             |
+| `categories`          | `["security", "bug", "logic"]`                                  | What to check: `security`, `bug`, `logic`, `performance`, `quality`, `style` |
+| `blockOnSeverity`     | `"high"`                                                        | Minimum severity to block push: `critical`, `high`, `medium`, `low`          |
+| `model`               | `"claude-opus-4-8"` / `"gpt-5.6-sol"`                           | AI model to use (default depends on provider)                                |
+| `maxDiffSize`         | `100000`                                                        | Max diff size in bytes before truncation                                     |
+| `exclude`             | `["*.lock", "*.min.js", "*.map", "dist/**", "node_modules/**"]` | File patterns to skip                                                        |
+| `verbose`             | `false`                                                         | Show full analysis summary                                                   |
+| `skipBranches`        | `[]`                                                            | Branch patterns to skip (supports trailing `*` wildcard)                     |
+| `timeout`             | `3600000`                                                       | Timeout in milliseconds for the AI CLI (default 1 hour)                      |
+| `translateIssues`     | `false`                                                         | Add a short translated summary to every issue                                |
+| `translationLanguage` | `"Italian"`                                                     | Language used for translated issue summaries                                 |
+| `customPrompt`        | —                                                               | Additional instructions for the review                                       |
 
 ### Environment variables
 
-| Variable             | Description                                    |
-| -------------------- | ---------------------------------------------- |
-| `PUSHGUARD_SKIP`     | Set to `1` to skip analysis entirely           |
-| `PUSHGUARD_PROVIDER` | Override the AI provider (`claude` or `codex`) |
-| `PUSHGUARD_MODEL`    | Override the AI model                          |
+| Variable                         | Description                                                     |
+| -------------------------------- | --------------------------------------------------------------- |
+| `PUSHGUARD_SKIP`                 | Set to `1` to skip analysis entirely                            |
+| `PUSHGUARD_PROVIDER`             | Override the AI provider (`claude` or `codex`)                  |
+| `PUSHGUARD_MODEL`                | Override the AI model                                           |
+| `PUSHGUARD_TIMEOUT`              | Override the AI CLI timeout in milliseconds                     |
+| `PUSHGUARD_TRANSLATE_ISSUES`     | Enable (`1`/`true`) or disable (`0`/`false`) issue translations |
+| `PUSHGUARD_TRANSLATION_LANGUAGE` | Override the issue translation language                         |
 
 ## Example output
 
