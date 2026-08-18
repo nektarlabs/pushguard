@@ -1,3 +1,9 @@
+# [1.11.0](https://github.com/nektarlabs/pushguard/compare/v1.10.1...v1.11.0) (2026-08-18)
+
+### Features
+
+- adds traslate options and increases default timeout ([ac42727](https://github.com/nektarlabs/pushguard/commit/ac42727be1dac2911d68c0a4b3ad05314c7d5b45))
+
 ## [1.10.1](https://github.com/nektarlabs/pushguard/compare/v1.10.0...v1.10.1) (2026-07-11)
 
 ### Bug Fixes
