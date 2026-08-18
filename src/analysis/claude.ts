@@ -46,7 +46,7 @@ function spawnClaude(args: string[], cwd: string, timeoutMs: number): Promise<st
     child.on("close", (code: number | null) => {
       clearTimeout(timer);
       if (code !== 0) {
-        reject(new Error(`Claude CLI exited with code ${code}: ${stderr}`));
+        reject(new Error(`Claude CLI exited with code ${code}: ${extractClaudeErrorMessage(stdout, stderr)}`));
       } else {
         resolve(stdout);
       }
@@ -57,6 +57,25 @@ function spawnClaude(args: string[], cwd: string, timeoutMs: number): Promise<st
       reject(err);
     });
   });
+}
+
+export function extractClaudeErrorMessage(stdout: string, stderr: string): string {
+  const stdoutMessage = stdout.trim();
+  if (stdoutMessage) {
+    try {
+      const response = JSON.parse(stdoutMessage) as Record<string, unknown>;
+      for (const key of ["result", "error", "message"]) {
+        const value = response[key];
+        if (typeof value === "string" && value.trim()) {
+          return value.trim();
+        }
+      }
+    } catch {
+      // Fall through to the raw CLI output when stdout is not JSON.
+    }
+  }
+
+  return stderr.trim() || stdoutMessage || "No error details returned";
 }
 
 function parseClaudeResponse(raw: string): AnalysisResult {

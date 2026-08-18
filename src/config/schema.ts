@@ -17,8 +17,12 @@ export interface GuardStagedConfig {
   verbose: boolean;
   /** Skip analysis for these branch patterns */
   skipBranches: string[];
-  /** Timeout in milliseconds for Claude CLI */
+  /** Timeout in milliseconds for the AI provider CLI */
   timeout: number;
+  /** Whether to include a translated summary for each issue */
+  translateIssues: boolean;
+  /** Language used for translated issue summaries */
+  translationLanguage: string;
   /** Whether to include full file contents of changed and related files */
   includeContext: boolean;
   /** Max size in bytes for context files */

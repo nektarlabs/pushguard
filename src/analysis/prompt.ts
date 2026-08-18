@@ -7,6 +7,12 @@ export function buildSystemPrompt(config: GuardStagedConfig): string {
   const categories = config.categories.join(", ");
   const blockIdx = SEVERITY_ORDER.indexOf(config.blockOnSeverity);
   const blockSeverities = SEVERITY_ORDER.slice(0, blockIdx + 1).join(", ");
+  const translationRule = config.translateIssues
+    ? `\n- For every issue, include a "translatedSummary" field with a single short sentence in ${config.translationLanguage} that explains the issue in simple language`
+    : "";
+  const translatedSummaryField = config.translateIssues
+    ? `\n      "translatedSummary": "Short explanation in ${config.translationLanguage}",`
+    : "";
 
   let prompt = `You are a code review guardian analyzing a git diff before push.
 You are running in the project's root directory. When analyzing changes, consider how they interact with the rest of the codebase. Full contents of the changed files and their direct dependents are provided below the diff for context — use them to understand imports, callers, types, and surrounding logic. If you need additional context beyond what is provided, read related files as needed.
@@ -27,7 +33,7 @@ Rules:
 - Comment correctness (ALWAYS check this, regardless of the focus areas above): for every code comment that is added or modified in the diff, verify that it accurately describes what the adjacent code actually does. Flag any comment that is misleading, outdated, contradicts the code, claims behavior the code does not implement, or cites wrong values, names, or units. Report these under category "quality". Scale severity by impact: a comment that misrepresents security-sensitive or behavior-critical logic can be "high", while minor stale wording is "low" or "info". In the "suggestion" field, give the corrected comment text.
 - For every issue, always include a "suggestion" field with a concrete fix (show the corrected code snippet when possible)
 - Be concise in messages and suggestions
-- When in doubt about how a changed function is used, read the relevant source files to verify before reporting an issue
+- When in doubt about how a changed function is used, read the relevant source files to verify before reporting an issue${translationRule}
 
 Respond with ONLY a JSON object (no markdown, no code fences, no explanation) matching this exact schema:
 {
@@ -39,7 +45,7 @@ Respond with ONLY a JSON object (no markdown, no code fences, no explanation) ma
       "category": "security" | "bug" | "logic" | "performance" | "quality" | "style",
       "file": "path/to/file",
       "line": 42,
-      "message": "Description of the issue",
+      "message": "Description of the issue",${translatedSummaryField}
       "suggestion": "How to fix it (include corrected code when possible)"
     }
   ]

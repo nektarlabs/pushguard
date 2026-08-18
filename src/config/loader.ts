@@ -57,6 +57,23 @@ function loadFromEnv(): Partial<GuardStagedConfig> {
     overrides.model = model;
   }
 
+  const timeout = Number(process.env.PUSHGUARD_TIMEOUT);
+  if (Number.isSafeInteger(timeout) && timeout > 0) {
+    overrides.timeout = timeout;
+  }
+
+  const translateIssues = process.env.PUSHGUARD_TRANSLATE_ISSUES?.toLowerCase();
+  if (translateIssues === "1" || translateIssues === "true") {
+    overrides.translateIssues = true;
+  } else if (translateIssues === "0" || translateIssues === "false") {
+    overrides.translateIssues = false;
+  }
+
+  const translationLanguage = process.env.PUSHGUARD_TRANSLATION_LANGUAGE?.trim();
+  if (translationLanguage) {
+    overrides.translationLanguage = translationLanguage;
+  }
+
   return overrides;
 }
 

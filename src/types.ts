@@ -13,6 +13,7 @@ export interface AnalysisIssue {
   file?: string;
   line?: number;
   message: string;
+  translatedSummary?: string;
   suggestion: string;
 }
 

@@ -59,6 +59,26 @@ describe("buildSystemPrompt", () => {
     expect(prompt).toContain("Comment correctness (ALWAYS check this");
     expect(prompt).toContain("verify that it accurately describes what the adjacent code actually does");
   });
+
+  it("does not request issue translations by default", () => {
+    const prompt = buildSystemPrompt(makeConfig());
+
+    expect(prompt).not.toContain("translatedSummary");
+  });
+
+  it("requests a short translated summary for every issue when enabled", () => {
+    const prompt = buildSystemPrompt(makeConfig({ translateIssues: true, translationLanguage: "Italian" }));
+
+    expect(prompt).toContain('include a "translatedSummary" field');
+    expect(prompt).toContain("single short sentence in Italian");
+    expect(prompt).toContain('"translatedSummary": "Short explanation in Italian"');
+  });
+
+  it("uses the configured translation language", () => {
+    const prompt = buildSystemPrompt(makeConfig({ translateIssues: true, translationLanguage: "Spanish" }));
+
+    expect(prompt).toContain("single short sentence in Spanish");
+  });
 });
 
 describe("buildUserPrompt", () => {
