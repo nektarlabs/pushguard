@@ -57,10 +57,10 @@ Pushguard supports two AI providers:
 
 | Provider           | CLI                                                           | Default model     |
 | ------------------ | ------------------------------------------------------------- | ----------------- |
-| `claude` (default) | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | `claude-opus-4-8` |
-| `codex`            | [Codex CLI](https://github.com/openai/codex)                  | `gpt-5.6-sol`     |
+| `claude` (default) | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | `claude-opus-5-5` |
+| `codex`            | [Codex CLI](https://github.com/openai/codex)                  | `gpt-6.1-sol`     |
 
-Supported Codex 5.6 models are `gpt-5.6-sol`, `gpt-5.6-terra`, and `gpt-5.6-luna`.
+You can select any model supported by the installed provider CLI.
 
 ### Via configuration
 
@@ -77,10 +77,10 @@ Set the `provider` (and optionally `model`) in `.pushguard.json`, `package.json`
 Override the provider per-push using `PUSHGUARD_PROVIDER`:
 
 ```bash
-# Codex with gpt-5.6-sol (default codex model)
+# Codex with gpt-6.1-sol (default codex model)
 PUSHGUARD_PROVIDER=codex git push
 
-# Claude with claude-opus-4-8 (default claude model)
+# Claude with claude-opus-5-5 (default claude model)
 PUSHGUARD_PROVIDER=claude git push
 
 # Override both provider and model
@@ -143,7 +143,7 @@ Add a `"pushguard"` key to your `package.json`, create a `.pushguard.json` file,
   "provider": "claude",
   "categories": ["security", "bug", "logic", "performance", "quality", "style"],
   "blockOnSeverity": "high",
-  "model": "claude-opus-4-8",
+  "model": "claude-opus-5-5",
   "maxDiffSize": 100000,
   "exclude": ["*.lock", "*.min.js", "*.map", "dist/**"],
   "verbose": false,
@@ -162,7 +162,7 @@ Add a `"pushguard"` key to your `package.json`, create a `.pushguard.json` file,
 | `provider`            | `"claude"`                                                      | AI provider: `claude` or `codex`                                             |
 | `categories`          | `["security", "bug", "logic"]`                                  | What to check: `security`, `bug`, `logic`, `performance`, `quality`, `style` |
 | `blockOnSeverity`     | `"high"`                                                        | Minimum severity to block push: `critical`, `high`, `medium`, `low`          |
-| `model`               | `"claude-opus-4-8"` / `"gpt-5.6-sol"`                           | AI model to use (default depends on provider)                                |
+| `model`               | `"claude-opus-5-5"` / `"gpt-6.1-sol"`                           | AI model to use (default depends on provider)                                |
 | `maxDiffSize`         | `100000`                                                        | Max diff size in bytes before truncation                                     |
 | `exclude`             | `["*.lock", "*.min.js", "*.map", "dist/**", "node_modules/**"]` | File patterns to skip                                                        |
 | `verbose`             | `false`                                                         | Show full analysis summary                                                   |
