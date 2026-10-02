@@ -1,3 +1,9 @@
+# [1.12.0](https://github.com/nektarlabs/pushguard/compare/v1.11.0...v1.12.0) (2026-10-02)
+
+### Features
+
+- makes claude-opus-5-5 and gpt-6.1-sol the default models ([7966eea](https://github.com/nektarlabs/pushguard/commit/7966eea119cf2883d8e2d58f6f70108392b0d68d))
+
 # [1.11.0](https://github.com/nektarlabs/pushguard/compare/v1.10.1...v1.11.0) (2026-08-18)
 
 ### Features
